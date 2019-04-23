@@ -2,7 +2,7 @@
 
 ## 1 前言
 
-本文当来自 <u>**沉梦昂志**</u> (dream-of-ambition)小队，本文档的目标是使 css 代码风格保持一致，容易被理解和被维护。
+本文当来自 <u>**沉梦志昂**</u> (dream-of-ambition)小队，本文档的目标是使 css 代码风格保持一致，容易被理解和被维护。
 
 ## 2 代码风格
 
@@ -701,7 +701,15 @@ h1 {
 
 #### [建议] 尽可能给出在高分辨率设备 (Retina) 下效果更佳的样式。
 
-## 8 兼容性
+ "id": "@id",
+
+​          "title": "@ctitle(15, 25)",
+
+​          "author": "@cname",
+
+​          "volume": "@int(100, 300)",
+
+​          "createAt": "@int(10000000000000, 1554363040517)"
 
 ### 8.1 属性前缀
 
@@ -771,3 +779,252 @@ h1 {
 ### 8.3 Expression
 
 #### [强制] 禁止使用 `Expression`。CSS中使用expression只有ie才能识别。
+
+## 9 命名规范
+
+### 9.1 文件夹命名
+
+- css文件夹命名应参照项目文件夹命名规则，命名总是以字母开头而不是数字，且字母一律小写，以中划线连接多个单词且不带其他标点符号。
+  如：input-number
+  有复数结构时，采取复数命名法。
+  如： style styles
+  |- components
+  |- input-number
+          |- inputNumber.html
+      |- inputNumber.js
+      |- styles
+          |- input_number.scss
+          |- images
+      |- menu
+
+### 9.2 文件命名
+
+- 全站架构：(以下文件放在跟路径下的styles目录中)
+
+```
+基本共用 base.scss
+布局、版面 layout.scss
+主题 themes.scss
+专栏 columns.scss
+文字 font.scss
+主要的 main.scss
+表单 forms.scss
+补丁 mend.scss
+打印 print.scss
+变量 variables.scss
+功能函数 mixins.scss
+色值 colors.scss
+动画 animations.scss
+字体 iconfont.scss
+```
+
+- 组件级 / 应用级：（放在组件/应用目录中）
+
+```
+css模块文件，其文件名必须与模块名一致。
+css页面文件，其文件名必须与HTML文件名一致。
+目的是让开发人员快速找到该页面或组件对应的css文件。
+文件命名总是以字母开头而不是数字，且字母一律小写，以下划线连接且不带其他标点符号。
+radio.scss
+main-list.scss
+main-detail.scss
+```
+
+### 9.3 变量命名
+
+- 命名变量的最佳方式就是使用抽象名词，尽量取消名字和值之间的直接关系。
+- 使用'$'开头+ 语义化的变量名。
+- 避免使用无意义的词，如: $calendar-component -> $calendar
+- 推荐变量的意义在前面，功能在后面
+
+```
+// 不推荐
+$red: #F50707;
+$yellow: #B3F724;
+
+// 推荐
+$brand-color: #F50707;
+$accent-color: #B3F724;
+
+// 你可能会使用名称加-color的后缀来命名颜色的变量:
+// Base colors
+$base-color: #333;
+$brand-color: #F50707;
+$brand-80-color: rgba($color-brand, 0.8);
+$accent-color: #B3F724;
+
+// 或者使用header-或者footer-来命名一些特殊的区域：
+// Header
+$header-height: 100px;
+$header-background-color: $color-brand;
+// Footer
+$footer-height: 200px;
+$footer-background-color: #aaa;
+
+// 不推荐
+$z-index-modal
+$padding-body
+// 推荐
+$modal-z-index
+$body-padding
+```
+
+### 9.4 选择器命名
+
+```
+  推荐采用BEM方式命名
+  // BE模式 block__element：块里的元素，如：nav（block）里的 a 标签(element)
+  <nav class="g-nav">
+      <a href="#" class="g-nav__item">工作动态</a>
+  </nav>
+  .g-nav__item {
+
+  }
+
+  // BM模式 block--modifier: 块元素加修饰符
+  // g-nav表示导航的通用样式，g-nav-top表示该导航特有的样式，g-nav--active表示激活的nav
+  <nav class="g-nav g-nav-top g-nav--active">
+  </nav>
+  .g-nav--active {
+
+  }
+
+  // BEM模式 block__element--modifier nav块里的a元素加上active状态
+  <nav class="g-nav">
+      <a href="#" class="g-nav__item g-nav__item--active">当前状态</a>
+  </nav>
+  .g-nav__item--active {
+
+  }
+
+  BEM只允许出现B__E--M,不允许出现B__B__B__E--M   B__E__E__E--M   B__E--M--M--M
+  如果层级过多，可以使用以下方式：
+  B__E--M > B__E--M > B__E--M(最多3层B__E--M嵌套)
+
+  // 推荐
+  <div class="c-card"><!-- B -->
+      <div class="c-card__header"><!-- B__E -->
+          <h2 class="c-card-title"><!-- B__E > B -->
+              <i class="c-card-title__icon--small"></i><!-- B__E > B__E--M -->
+              <i class="c-card-title__icon--big"></i><!-- B__E > B__E--M -->
+              <span class="c-card-title__text-wrap">Title text here</span><!-- B__E > B__E -->
+          </h2>
+      </div>
+  </div>
+  // 推荐
+  .c-card {                      // B
+
+      &__header {                // B__E
+
+          > .c-card-title {      // B__E > B
+
+              &__icon--small {   // B__E > B__E--M
+
+              }
+
+              &__icon--big {     // B__E > B__E--M
+
+              }
+
+              &__text-wrap {     // B__E > B__E
+
+              }
+          }
+      }
+
+  }
+
+  // 不推荐
+  <div class="c-card">
+      <div class="c-card__header">
+          <h2 class="c-card__header__title">
+              <i class="c-card__header__title__icon"></i>
+              <span class="c-card__header__title__text">Title text here</span>
+          </h2>
+      </div>
+  </div>
+
+  // 不推荐
+  .c-card {
+
+      &__header{
+
+          &__title {
+
+              &__icon {
+
+              }
+
+              &__text {
+
+              }
+          }
+      }
+  }
+
+  - 注意到以上示例中使用了c- 前缀。这个c代表'component'，给组件加上命名空间，它提高了代码的可读性。
+  类型 | 前缀 | 例子 | 描述
+  布局 | (g-) | g-header | (global)例如头部，尾部，主体，侧栏等
+  组件 | (c-) | c-card | (component)较大整体，如登录注册，搜索等
+  元件 | (u-) | u-btn | 不可再分个体，例如按钮，input框等
+  功能 | (f-) | f-clear | (function)使用频率较高样式，例如清除浮动
+  皮肤 | (s-) | s-nav | (skin) 只包含皮肤的样式
+  主线 | (ig-) | ig-header | (igoal)主线模块中组件Block的前缀
+  审批 | (ap-) | ap-header | (approve)审批模块中组件Block的前缀
+  ...
+```
+
+```
+命名时需要注意的点：
+- 规则命名中，一律采用小写加中划线的方式，不允许使用大写字母或_
+- 命名避免使用中文拼音，应该采用更简明有语义的英文单词进行组合
+- 命名注意缩写，但是不能盲目缩写
+- 不允许通过1、2、3等序号进行命名
+- 避免class与id重名
+- class用于标识某一个类型的对象，命名必须言简意赅
+- 尽可能提高代码模块的复用，样式尽量用组合的方式
+- 公共样式名不得包含业务名称
+```
+
+### 9.5 mixins命名
+
+- 见名知义
+- 小写加中划线，不允许出现大小字母或_
+
+```
+// 不推荐
+@mixin button($background: green) {
+
+}
+// 不推荐
+@mixin buttonBg($background: green) {
+
+}
+// 不推荐
+@mixin button_bg($background: green) {
+
+}
+// 推荐
+@mixin button-bg($background: green) {
+
+}
+
+```
+
+多个参数之间用逗号分隔，给参数设置默认值
+
+### 9.6 重写规范
+
+  我们不允许直接使用公共库的选择器进行重写，如果要进行重写，必须自己重新加一个新的选择器，并且，这个选择器不能对公共库有影响。
+
+```  // 错误
+  // 错误
+  .qf-xxx .qf-btn {
+      //some rewriting code
+  }
+  // 正确
+  .qf-xxx__qf-btn {
+      //some rewriting code
+  }
+  //使用的时候用qf-btn 和 qf-xxx__qf-btn两个class, 所以在写组件的时候，为了考虑组件的通用性和可重写性，建议组件开发人员，都提供一个外部的样式输入接口
+```
